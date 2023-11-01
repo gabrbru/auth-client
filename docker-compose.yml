@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  auth-localstack:
+    container_name: "auth-localstack"    
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"            # LocalStack Gateway
+      - "4510-4559:4510-4559"  # external services port range      
+    volumes:      
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    privileged: true
+    environment:
+      - AWS_DEFAULT_REGION=us-east-2
+      - AWS_ACCESS_KEY_ID=fakeAccessKeyId
+      - AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey      
+      - DEBUG=1    
+      - DOCKER_HOST=unix:///var/run/docker.sock

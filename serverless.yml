@@ -1,0 +1,82 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: auth-client
+
+plugins:
+  - serverless-localstack  
+  - serverless-offline 
+
+custom:
+  localstack:
+      stages:
+        - local
+      host: http://localhost  
+      edgePort: 4566
+      autostart: false
+  serverless-offline:
+    useChildProcesses: true
+
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${env:REGION, 'us-east-2'}
+  stage: ${opt:stage, 'local'}
+
+# you can add statements to the Lambda function's IAM Role here
+#  iam:
+#    role:
+#      statements:
+#        - Effect: "Allow"
+#          Action:
+#            - "s3:ListBucket"
+#          Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+#        - Effect: "Allow"
+#          Action:
+#            - "s3:PutObject"
+#          Resource:
+#            Fn::Join:
+#              - ""
+#              - - "arn:aws:s3:::"
+#                - "Ref" : "ServerlessDeploymentBucket"
+#                - "/*"
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
+package:
+  individually: true
+  excludeDevDependencies: true
+  patterns:
+    - "!**/*"
+
+functions:
+  autentication-user:
+    name: autentication-user
+    handler: src/functions/autentication-user/processor.executor
+    events:
+      - http:
+          path: /autentication-user/{cpf}
+          method: get
+          cors: true
+    package:
+      patterns:
+        - 'src/functions/autentication-user/**'
+        - 'libs/**'
+        - 'node_modules/**'
+    environment:
+      BASEURL: https://enginer.dev.rarolabs.com.br

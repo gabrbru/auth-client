@@ -1,0 +1,22 @@
+{
+  "name": "auth-client",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "deploy:local": "npx serverless deploy --stage local",
+    "offline": "npx sls offline --httpPort 5000 --stage local "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "serverless": "^3.36.0",
+    "serverless-localstack": "^1.1.2",
+    "serverless-offline": "^13.2.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}
